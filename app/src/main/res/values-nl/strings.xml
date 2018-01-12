@@ -2,4 +2,5 @@
     <string name="ok">OK</string>
     <string name="app_name">demo</string>
     <string name="action_settings">Instellingen</string>
+    <string name="no_permissions">De app heeft toestemming nodig om de issues file te lezen</string>
 </resources>
