@@ -3,6 +3,8 @@ package nl.christine.demo.csv;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,29 +17,28 @@ import java.util.Date;
 public class Issue {
 
     public static DateFormat dateFormat = new SimpleDateFormat("dd MMM HH:mm");
-     static DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    static DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    @CsvBindByPosition(position = 0)
     private String firstName;
 
-    @CsvBindByPosition(position = 1)
     private String lastName;
 
-    @CsvBindByPosition(position = 2)
-    private int number;
+    private int number = 0;
 
-    @CsvBindByPosition(position = 3)
     private Date date;
 
     public Issue(String firstName, String lastName, String number, String date) {
+        this.firstName = firstName;
         this.lastName = lastName;
-        this.number = Integer.parseInt(number);
+        if (NumberUtils.isDigits(number)) {
+            this.number = Integer.parseInt(number);
+        }
         try {
             this.date = df.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
+            this.date = new Date(System.currentTimeMillis());
         }
-        this.firstName = firstName;
     }
 
     public String getFirstName() {
