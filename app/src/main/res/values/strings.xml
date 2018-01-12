@@ -1,0 +1,7 @@
+<resources>
+    <string name="ok">OK</string>
+    <string name="app_name">Issues</string>
+    <string name="action_settings">Settings</string>
+    <string name="storage_permission_title">Permission requested</string>
+    <string name="storage_permission_text">The app would like to write to the flash memory of your phone.</string>
+</resources>
