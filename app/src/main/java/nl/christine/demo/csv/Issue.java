@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,8 +17,8 @@ import java.util.Date;
 
 public class Issue {
 
-    public static DateFormat dateFormat = new SimpleDateFormat("dd MMM HH:mm");
-    static DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static FastDateFormat dateFormat =  FastDateFormat.getInstance("dd MMM HH:mm");
+    static FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
     private String firstName;
 
@@ -39,14 +40,6 @@ public class Issue {
             e.printStackTrace();
             this.date = new Date(System.currentTimeMillis());
         }
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
     public int getNumber() {
