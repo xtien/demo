@@ -2,7 +2,6 @@
  * Copyright (c) 2018. Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at  http://www. apache.org/licenses/LICENSE-2.0.
  */
-
 package nl.christine.demo.csv;
 
 import android.util.Log;
@@ -26,7 +25,6 @@ public class MyCsvReaderImpl implements MyCsvReader {
 
     private final String fileName;
     private final ExecutorService executor;
-    private String TAG = getClass().getSimpleName();
 
     public MyCsvReaderImpl(String fileName) {
 
@@ -38,29 +36,27 @@ public class MyCsvReaderImpl implements MyCsvReader {
     public void readIssues(final CsvCallback callback) {
 
         executor.submit(new Runnable() {
+
             @Override
             public void run() {
 
                 try {
                     FileReader fr = new FileReader(fileName);
                     String contents = FileUtils.readFileToString(new File(fileName), "UTF-8");
-                    contents = contents.replace("\"","");
+                    contents = contents.replace("\"", "");
 
                     List<Issue> issues = new ArrayList<Issue>();
 
                     String[] issueStrings = contents.split("\r\n");
 
-                    for(int i=1;i<issueStrings.length;i++){
+                    for (int i = 1; i < issueStrings.length; i++) {
                         String[] issueString = issueStrings[i].split(",");
-                        Issue issue = new Issue(issueString[0],issueString[1],issueString[2],issueString[3]);
+                        Issue issue = new Issue(issueString[0], issueString[1], issueString[2], issueString[3]);
                         issues.add(issue);
                     }
 
-                    Log.d("","");
-
-
-
                     callback.setResult(issues);
+
                 } catch (FileNotFoundException e) {
                     callback.setException(e);
                 } catch (IOException e) {

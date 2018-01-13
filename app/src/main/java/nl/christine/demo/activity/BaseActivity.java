@@ -2,7 +2,6 @@
  * Copyright (c) 2018. Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at  http://www. apache.org/licenses/LICENSE-2.0.
  */
-
 package nl.christine.demo.activity;
 
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import nl.christine.demo.dialog.MyAlert;
 import nl.christine.demo.log.LogFactory;
-
 
 /**
  * Created by christine

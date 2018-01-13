@@ -52,7 +52,7 @@ public class CsvListAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.csv_list_row, null);
         ((TextView) convertView.findViewById(R.id.name)).setText(issue.getName());
         ((TextView) convertView.findViewById(R.id.number_of_issues)).setText(Integer.toString(issue.getNumber()));
-        ((TextView) convertView.findViewById(R.id.date)).setText(Issue.dateFormat.format(issue.getDate()));
+        ((TextView) convertView.findViewById(R.id.date)).setText(issue.getDate());
 
         return convertView;
     }
