@@ -1,4 +1,13 @@
+/*
+ * Copyright (c) 2018. Christine Karman
+ * This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at  http://www. apache.org/licenses/LICENSE-2.0.
+ */
+
 apply plugin: 'com.android.application'
+
+def keystorePropertiesFile = rootProject.file("./local.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 26
@@ -16,6 +25,35 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        production {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.production
+        }
+    }
 }
 
 dependencies {
@@ -30,6 +68,8 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testCompile('org.robolectric:robolectric:3.6.1') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        exclude module: 'commons-logging'
+    }
 }

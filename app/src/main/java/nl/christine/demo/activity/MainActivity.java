@@ -1,23 +1,16 @@
 /*
- * Copyright (c) 2018, Christine Karman
- * This project is free software: you can redistribute it and/or modify it under the terms of
- * the Apache License, Version 2.0. You can find a copy of the license at
- * http://www. apache.org/licenses/LICENSE-2.0.
+ * Copyright (c) 2018. Christine Karman
+ * This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at  http://www. apache.org/licenses/LICENSE-2.0.
  */
 package nl.christine.demo.activity;
 
 import android.Manifest;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import org.apache.commons.io.IOUtils;
@@ -56,9 +49,6 @@ public class MainActivity extends BaseActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
 
         doIt();

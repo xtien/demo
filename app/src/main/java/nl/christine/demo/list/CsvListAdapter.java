@@ -1,13 +1,10 @@
 /*
- * Copyright (c) 8, Christine Karman
- * This project is free software: you can redistribute it and/or modify it under the terms of
- * the Apache License, Version 2.0. You can find a copy of the license at
- * http://www. apache.org/licenses/LICENSE-2.0.
+ * Copyright (c) 2018. Christine Karman
+ * This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at  http://www. apache.org/licenses/LICENSE-2.0.
  */
 
 package nl.christine.demo.list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.christine.demo.R;
-import nl.christine.demo.csv.CsvCallback;
 import nl.christine.demo.csv.Issue;
-import nl.christine.demo.csv.MyCsvReader;
-import nl.christine.demo.csv.MyCsvReaderFactory;
 
 public class CsvListAdapter extends BaseAdapter {
 
