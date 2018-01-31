@@ -4,18 +4,21 @@
  */
 package nl.christine.demo.csv;
 
-import android.util.Log;
+import android.content.Context;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.inject.Inject;
+
+import nl.christine.demo.R;
 
 /**
  * Created by christine on 11-1-18.
@@ -23,46 +26,43 @@ import java.util.concurrent.Executors;
 
 public class MyCsvReaderImpl implements MyCsvReader {
 
-    private final String fileName;
+    private  String fileName;
     private final ExecutorService executor;
 
-    public MyCsvReaderImpl(String fileName) {
+    @Inject
+    public Context context;
 
-        this.fileName = fileName;
+    public MyCsvReaderImpl() {
+
+        //this.fileName = context.getString(R.string.issues_file);
         executor = Executors.newCachedThreadPool();
     }
 
     @Override
-    public void readIssues(final CsvCallback callback) {
+    public List<Issue> readIssues() {
 
-        executor.submit(new Runnable() {
+        try {
+            String contents = FileUtils.readFileToString(new File(fileName), "UTF-8");
+            contents = contents.replace("\"", "");
 
-            @Override
-            public void run() {
+            List<Issue> issues = new ArrayList<Issue>();
 
-                try {
-                    FileReader fr = new FileReader(fileName);
-                    String contents = FileUtils.readFileToString(new File(fileName), "UTF-8");
-                    contents = contents.replace("\"", "");
+            String[] issueStrings = contents.split("\r\n");
 
-                    List<Issue> issues = new ArrayList<Issue>();
-
-                    String[] issueStrings = contents.split("\r\n");
-
-                    for (int i = 1; i < issueStrings.length; i++) {
-                        String[] issueString = issueStrings[i].split(",");
-                        Issue issue = new Issue(issueString[0], issueString[1], issueString[2], issueString[3]);
-                        issues.add(issue);
-                    }
-
-                    callback.setResult(issues);
-
-                } catch (FileNotFoundException e) {
-                    callback.setException(e);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            for (int i = 1; i < issueStrings.length; i++) {
+                String[] issueString = issueStrings[i].split(",");
+                Issue issue = new Issue(issueString[0], issueString[1], issueString[2], issueString[3]);
+                issues.add(issue);
             }
-        });
+
+            return issues;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<Issue>();
     }
 }

@@ -4,10 +4,13 @@
  */
 package nl.christine.demo.csv;
 
+import java.util.List;
+
 /**
  * Created by christine on 11-1-18.
  */
 
 public interface MyCsvReader {
-    void readIssues(CsvCallback callback);
+
+    List<Issue> readIssues();
 }

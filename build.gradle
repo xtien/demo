@@ -30,3 +30,20 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    supportLibraryVersion = "26.1.0"
+    toothpickVersion = "1.1.1"
+    butterKnifeVersion = "8.8.1"
+    lifecycleVersion = "1.1.0"
+    commonsLangVersion = "3.1"
+    commonsIOVersion = "2.6"
+    openCSVVersion = "4.1"
+    constraintLayouVersion = "1.0.2"
+    supportDesignVersion = "26.1.0"
+    robolectricVersion = "3.6.1"
+    junitVersion = "4.12"
+    rxjavaVersion = "2.1.9"
+    rxandroidVersion = "2.0.1"
+    daggerVersion = "2.13"
+}

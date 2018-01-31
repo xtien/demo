@@ -7,13 +7,14 @@ package nl.christine.demo.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import dagger.android.HasActivityInjector;
 import nl.christine.demo.dialog.MyAlert;
 import nl.christine.demo.log.LogFactory;
 
 /**
  * Created by christine
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity  {
 
     private static final String LOGTAG = BaseActivity.class.getSimpleName();
 

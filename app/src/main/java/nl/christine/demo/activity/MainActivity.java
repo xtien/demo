@@ -5,33 +5,47 @@
 package nl.christine.demo.activity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.ListView;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 import nl.christine.demo.R;
-import nl.christine.demo.csv.CsvCallback;
-import nl.christine.demo.csv.Issue;
-import nl.christine.demo.csv.MyCsvReader;
-import nl.christine.demo.csv.MyCsvReaderFactory;
-import nl.christine.demo.list.CsvListAdapter;
+import nl.christine.demo.viewmodel.MainActivityViewModel;
+import nl.christine.demo.viewmodel.Response;
+import nl.christine.demo.viewmodel.MainActivityViewModelFactory;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity  implements HasActivityInjector {
 
-    private ListView listView;
+    @Inject
+    public DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
+
+    private RecyclerView listView;
 
     private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1001;
+    private LinearLayoutManager layoutManager;
+
+    @Inject
+    public MainActivityViewModelFactory mainActivityViewModelFactory;
+
+    private MainActivityViewModel viewModel;
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -57,6 +71,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -85,27 +100,45 @@ public class MainActivity extends BaseActivity {
         }
 
         listView = findViewById(R.id.list);
-        MyCsvReader reader = MyCsvReaderFactory.get(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getString(R.string.issues_file));
 
-        reader.readIssues(new CsvCallback() {
+        layoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(layoutManager);
 
-            @Override
-            public void setResult(final List<Issue> result) {
+        viewModel = ViewModelProviders.of(this, mainActivityViewModelFactory).get(MainActivityViewModel.class);
 
-                if (result != null) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listView.setAdapter(new CsvListAdapter(getApplicationContext(), result));
-                        }
-                    });
-                }
-            }
+        viewModel.response().observe(this, response -> processResponse(response));
 
-            @Override
-            public void setException(Exception e) {
-                showAlert(e);
-            }
-        });
+        viewModel.loadIssues();
+    }
+
+    private void processResponse(Response response) {
+
+        switch (response.status) {
+            case LOADING:
+                renderLoadingState();
+                break;
+
+            case SUCCESS:
+                renderDataState(response.data);
+                break;
+
+            case ERROR:
+                renderErrorState(response.error);
+                break;
+        }
+    }
+
+    private void renderLoadingState() {
+    }
+
+    private void renderDataState(String greeting) {
+    }
+
+    private void renderErrorState(Throwable throwable) {
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingActivityInjector;
     }
 }

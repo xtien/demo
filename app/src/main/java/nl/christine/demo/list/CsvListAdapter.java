@@ -6,10 +6,12 @@
 package nl.christine.demo.list;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.List;
 import nl.christine.demo.R;
 import nl.christine.demo.csv.Issue;
 
-public class CsvListAdapter extends BaseAdapter {
+public class CsvListAdapter extends RecyclerView.Adapter<CsvListAdapter.ViewHolder> {
 
     private final LayoutInflater inflater;
     List<Issue> issues = new ArrayList<Issue>();
@@ -30,13 +32,22 @@ public class CsvListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return issues.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        LinearLayout view = (LinearLayout) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.csv_list_row, parent, false);
+
+        return new ViewHolder(view);
     }
 
     @Override
-    public Object getItem(int position) {
-        return issues.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        Issue issue = issues.get(position);
+
+        holder.name.setText(issue.getName());
+        holder.numberOfIssues.setText(Integer.toString(issue.getNumber()));
+        holder.date.setText(issue.getDate());
     }
 
     @Override
@@ -45,15 +56,20 @@ public class CsvListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public int getItemCount() {
+        return issues.size();
+    }
 
-        Issue issue = issues.get(position);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        convertView = inflater.inflate(R.layout.csv_list_row, null);
-        ((TextView) convertView.findViewById(R.id.name)).setText(issue.getName());
-        ((TextView) convertView.findViewById(R.id.number_of_issues)).setText(Integer.toString(issue.getNumber()));
-        ((TextView) convertView.findViewById(R.id.date)).setText(issue.getDate());
+        public TextView name, numberOfIssues, date;
 
-        return convertView;
+        public ViewHolder(LinearLayout v) {
+            super(v);
+
+            name = (TextView) v.findViewById(R.id.name);
+            numberOfIssues = (TextView) v.findViewById(R.id.number_of_issues);
+            date = (TextView) v.findViewById(R.id.date);
+        }
     }
 }
