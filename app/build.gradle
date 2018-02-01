@@ -29,7 +29,6 @@ android {
             includeAndroidResources = true
         }
     }
-
     signingConfigs {
         debug {
             storeFile file(keystoreProperties['storeFile'])
@@ -44,7 +43,6 @@ android {
             keyPassword 'android'
         }
     }
-
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -63,29 +61,21 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$project.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$project.constraintLayouVersion"
     implementation "com.android.support:design:$project.supportDesignVersion"
-
     implementation "com.opencsv:opencsv:$project.openCSVVersion"
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     implementation "com.jakewharton:butterknife:$project.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$project.butterKnifeVersion"
-
     implementation "commons-io:commons-io:$project.commonsIOVersion"
     implementation group: "org.apache.commons", name: "commons-lang3", version: "$project.commonsLangVersion"
-
     implementation "io.reactivex.rxjava2:rxjava:$project.rxjavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$project.rxandroidVersion"
-
     annotationProcessor "com.google.dagger:dagger-android-processor:$project.daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$project.daggerVersion"
     implementation "com.google.dagger:dagger-android:$project.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$project.daggerVersion"
-
     implementation "android.arch.lifecycle:runtime:$project.lifecycleVersion"
     implementation "android.arch.lifecycle:extensions:$project.lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$project.lifecycleVersion"
-
     testImplementation "junit:junit:$project.junitVersion"
     testImplementation("org.robolectric:robolectric:$project.robolectricVersion") {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

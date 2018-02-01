@@ -27,7 +27,7 @@ public class AppModule {
 
     @Singleton
     @Provides
-    MyCsvReader provideMyCsvReader() {
-        return new MyCsvReaderImpl();
+    MyCsvReader provideMyCsvReader(Context context) {
+        return new MyCsvReaderImpl(context);
     }
 }

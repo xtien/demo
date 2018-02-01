@@ -10,6 +10,7 @@ import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.support.AndroidSupportInjectionModule;
 import nl.christine.demo.App;
+import nl.christine.demo.csv.MyCsvReader;
 
 @Singleton
 @Component(modules = {

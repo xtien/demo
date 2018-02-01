@@ -5,6 +5,7 @@
 package nl.christine.demo.csv;
 
 import android.content.Context;
+import android.os.Environment;
 
 import org.apache.commons.io.FileUtils;
 
@@ -29,12 +30,9 @@ public class MyCsvReaderImpl implements MyCsvReader {
     private  String fileName;
     private final ExecutorService executor;
 
-    @Inject
-    public Context context;
+    public MyCsvReaderImpl(Context context) {
 
-    public MyCsvReaderImpl() {
-
-        this.fileName = "/sdcard/issues.csv";
+       fileName = Environment.getExternalStorageDirectory() +"/" + context.getString(R.string.issues_file);
         executor = Executors.newCachedThreadPool();
     }
 
