@@ -34,7 +34,7 @@ public class MyCsvReaderImpl implements MyCsvReader {
 
     public MyCsvReaderImpl() {
 
-        //this.fileName = context.getString(R.string.issues_file);
+        this.fileName = "/sdcard/issues.csv";
         executor = Executors.newCachedThreadPool();
     }
 

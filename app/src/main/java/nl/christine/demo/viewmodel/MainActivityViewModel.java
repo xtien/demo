@@ -6,6 +6,7 @@ package nl.christine.demo.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import nl.christine.demo.csv.Issue;
 import nl.christine.demo.csv.MyCsvReader;
@@ -25,16 +27,18 @@ import nl.christine.demo.rx.SchedulersFacade;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private final SchedulersFacade schedulersFacade;
+    private static final String TAG = MainActivityViewModel.class.getSimpleName();
 
-    @Inject
     public MyCsvReader reader;
-
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     public final MutableLiveData<Response> response = new MutableLiveData<>();
+    private Single<Object> issuesSingle;
 
-    public MainActivityViewModel(SchedulersFacade schedulersFacade) {
+    private final SchedulersFacade schedulersFacade;
+
+    public MainActivityViewModel(MyCsvReader myCsvReader, SchedulersFacade schedulersFacade) {
+        this.reader = myCsvReader;
         this.schedulersFacade = schedulersFacade;
     }
 
@@ -44,29 +48,32 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public MutableLiveData<Response> response() {
+
         return response;
     }
 
     public void loadIssues() {
 
-        Observable.create(new ObservableOnSubscribe<Issue>() {
+        Log.d(TAG, "loadIssues");
 
-            @Override
-            public void subscribe(ObservableEmitter<Issue> emitter) throws Exception {
+        issuesSingle = Single.create(emitter -> {
 
+            Thread thread = new Thread(() -> {
                 try {
-
+                    Log.d(TAG, "load issues runnable");
                     List<Issue> issues = reader.readIssues();
-                    for (Issue issue : issues) {
-                        emitter.onNext(issue);
-                    }
-                    emitter.onComplete();
-
+                    emitter.onSuccess(issues);
                 } catch (Exception e) {
                     emitter.onError(e);
                 }
-            }
+            });
+            Log.d(TAG, "thread.start");
+            thread.start();
         });
+
+        disposables.add(issuesSingle.subscribeOn(schedulersFacade.io())
+                .observeOn(schedulersFacade.ui())
+                .subscribe(issue -> response.setValue(Response.success((List<Issue>) issue))));
     }
 
 }

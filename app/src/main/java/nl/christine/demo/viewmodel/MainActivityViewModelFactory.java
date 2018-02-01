@@ -7,6 +7,7 @@ package nl.christine.demo.viewmodel;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
+import nl.christine.demo.csv.MyCsvReader;
 import nl.christine.demo.rx.SchedulersFacade;
 
 /**
@@ -15,17 +16,18 @@ import nl.christine.demo.rx.SchedulersFacade;
 
 public class MainActivityViewModelFactory implements ViewModelProvider.Factory{
 
-
+    private final MyCsvReader myCvsReader;
     private final SchedulersFacade schedulersFacade;
 
-    public MainActivityViewModelFactory(SchedulersFacade schedulersFacade) {
+    public MainActivityViewModelFactory(MyCsvReader myCsvReader, SchedulersFacade schedulersFacade) {
+        this.myCvsReader = myCsvReader;
         this.schedulersFacade = schedulersFacade;
-    }
+     }
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainActivityViewModel.class)) {
-            return (T) new MainActivityViewModel(schedulersFacade);
+            return (T) new MainActivityViewModel(myCvsReader, schedulersFacade);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

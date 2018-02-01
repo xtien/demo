@@ -7,6 +7,10 @@ package nl.christine.demo.viewmodel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.List;
+
+import nl.christine.demo.csv.Issue;
+
 import static nl.christine.demo.viewmodel.Status.ERROR;
 import static nl.christine.demo.viewmodel.Status.LOADING;
 import static nl.christine.demo.viewmodel.Status.SUCCESS;
@@ -19,12 +23,12 @@ public class Response {
     public final Status status;
 
     @Nullable
-    public final String data;
+    public final List<Issue> data;
 
     @Nullable
     public final Throwable error;
 
-    private Response(Status status, @Nullable String data, @Nullable Throwable error) {
+    private Response(Status status, @Nullable List<Issue> data, @Nullable Throwable error) {
         this.status = status;
         this.data = data;
         this.error = error;
@@ -34,8 +38,8 @@ public class Response {
         return new Response(LOADING, null, null);
     }
 
-    public static Response success(@NonNull String data) {
-        return new Response(SUCCESS, data, null);
+    public static Response success(@NonNull List<Issue> issues) {
+        return new Response(SUCCESS, issues, null);
     }
 
     public static Response error(@NonNull Throwable error) {

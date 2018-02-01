@@ -6,6 +6,7 @@ package nl.christine.demo.activity;
 
 import dagger.Module;
 import dagger.Provides;
+import nl.christine.demo.csv.MyCsvReader;
 import nl.christine.demo.rx.SchedulersFacade;
 import nl.christine.demo.viewmodel.MainActivityViewModelFactory;
 
@@ -13,7 +14,7 @@ import nl.christine.demo.viewmodel.MainActivityViewModelFactory;
 public class MainActivityModule {
 
     @Provides
-    MainActivityViewModelFactory provideMainActivityViewModelFactory(SchedulersFacade schedulersFacade) {
-        return new MainActivityViewModelFactory(schedulersFacade);
+    MainActivityViewModelFactory provideMainActivityViewModelFactory(MyCsvReader myCsvReader, SchedulersFacade schedulersFacade) {
+        return new MainActivityViewModelFactory(myCsvReader, schedulersFacade);
     }
 }

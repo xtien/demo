@@ -48,4 +48,10 @@ public class MyLog  {
             e.printStackTrace();
         }
     }
+
+    public void e(String logtag, Throwable e) {
+        if (logging) {
+            e.printStackTrace();
+        }
+    }
 }

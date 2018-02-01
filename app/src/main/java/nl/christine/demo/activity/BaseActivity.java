@@ -10,20 +10,21 @@ import android.support.v7.app.AppCompatActivity;
 import dagger.android.HasActivityInjector;
 import nl.christine.demo.dialog.MyAlert;
 import nl.christine.demo.log.LogFactory;
+import nl.christine.demo.log.MyLog;
 
 /**
  * Created by christine
  */
-public class BaseActivity extends AppCompatActivity  {
+public class BaseActivity extends AppCompatActivity {
 
     private static final String LOGTAG = BaseActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-         super.onCreate(savedInstanceState);
-   }
+        super.onCreate(savedInstanceState);
+    }
 
-    protected void showAlert(final Exception e) {
+    protected void showAlert(final Throwable e) {
         LogFactory.get().e(LOGTAG, e);
         showAlert(e.getClass().getSimpleName() + " " + (e.getMessage() != null ? e.getMessage() : ""));
     }
