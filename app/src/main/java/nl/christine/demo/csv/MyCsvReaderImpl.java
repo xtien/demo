@@ -12,6 +12,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +21,8 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import nl.christine.demo.R;
+import nl.christine.demo.dao.DemoDatabaseHelper;
+import nl.christine.demo.dao.IssueDao;
 
 /**
  * Created by christine on 11-1-18.
@@ -27,13 +30,13 @@ import nl.christine.demo.R;
 
 public class MyCsvReaderImpl implements MyCsvReader {
 
-    private  String fileName;
-    private final ExecutorService executor;
+    private String fileName;
+    private IssueDao issueDao;
 
-    public MyCsvReaderImpl(Context context) {
+    public MyCsvReaderImpl(Context context, DemoDatabaseHelper demoDatabaseHelper) {
 
-       fileName = Environment.getExternalStorageDirectory() +"/" + context.getString(R.string.issues_file);
-        executor = Executors.newCachedThreadPool();
+        fileName = Environment.getExternalStorageDirectory() + "/" + context.getString(R.string.issues_file);
+        this.issueDao = (IssueDao) demoDatabaseHelper.getDAO(Issue.class);
     }
 
     @Override
@@ -47,10 +50,17 @@ public class MyCsvReaderImpl implements MyCsvReader {
 
             String[] issueStrings = contents.split("\r\n");
 
+            issueDao.clear();
+
             for (int i = 1; i < issueStrings.length; i++) {
                 String[] issueString = issueStrings[i].split(",");
                 Issue issue = new Issue(issueString[0], issueString[1], issueString[2], issueString[3]);
                 issues.add(issue);
+                try {
+                    issueDao.store(issue);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
 
             return issues;

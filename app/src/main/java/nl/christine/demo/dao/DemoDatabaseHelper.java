@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 import nl.christine.demo.Constants;
 import nl.christine.demo.csv.Issue;
+import nl.christine.demo.dao.impl.IssueDaoImpl;
 
 /**
  * Database helper class used to manage the creation and upgrading of your
@@ -70,8 +71,14 @@ public class DemoDatabaseHelper extends OrmLiteSqliteOpenHelper {
         createTables();
     }
 
-    public Dao<?, ?> getDAO(Class<?> type) throws SQLException {
-        return DaoManager.createDao(connectionSource, type);
+    public Dao<?, ?> getDAO(Class<?> type)  {
+        try {
+            return DaoManager.createDao(connectionSource, type);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**

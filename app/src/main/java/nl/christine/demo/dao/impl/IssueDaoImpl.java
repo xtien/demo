@@ -21,6 +21,7 @@ public class IssueDaoImpl extends BaseDaoImpl<Issue, Integer> implements IssueDa
     @Override
     public Issue store(Issue issue) throws SQLException {
 
+        create(issue);
 
         return issue;
     }
@@ -28,5 +29,16 @@ public class IssueDaoImpl extends BaseDaoImpl<Issue, Integer> implements IssueDa
     @Override
     public List<Issue> getIssues() throws SQLException {
         return queryForAll();
+    }
+
+    @Override
+    public void clear() {
+        try {
+            for (Issue issue : queryForAll()) {
+                delete(issue);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -36,7 +36,7 @@ ext {
     toothpickVersion = "1.1.1"
     butterKnifeVersion = "8.8.1"
     lifecycleVersion = "1.1.0"
-    commonsLangVersion = "3.1"
+    commonsLangVersion = "3.3.1"
     commonsIOVersion = "2.6"
     openCSVVersion = "4.1"
     constraintLayouVersion = "1.0.2"

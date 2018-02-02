@@ -5,8 +5,7 @@
 package nl.christine.demo.dagger;
 
 import android.content.Context;
-
-import java.sql.SQLException;
+import android.support.annotation.Nullable;
 
 import javax.inject.Singleton;
 
@@ -18,14 +17,12 @@ import nl.christine.demo.csv.MyCsvReader;
 import nl.christine.demo.csv.MyCsvReaderImpl;
 import nl.christine.demo.dao.DemoDatabaseHelper;
 import nl.christine.demo.dao.IssueDao;
-import nl.christine.demo.dao.impl.IssueDaoImpl;
 
 /**
  * This is where you will inject application-wide dependencies.
  */
 @Module
 public class AppModule {
-
 
     @Provides
     Context provideContext(App application) {
@@ -34,13 +31,13 @@ public class AppModule {
 
     @Singleton
     @Provides
-    MyCsvReader provideMyCsvReader(Context context) {
-        return new MyCsvReaderImpl(context);
+    MyCsvReader provideMyCsvReader(Context context, DemoDatabaseHelper databaseHelper) {
+        return new MyCsvReaderImpl(context, databaseHelper);
     }
 
-//    @Singleton
-//    @Provides
-//    IssueDao provideIssueDao(Context context) throws SQLException {
-//        return (IssueDao) new DemoDatabaseHelper(context).getDAO(Issue.class);
-//    }
+    @Singleton
+    @Provides
+    DemoDatabaseHelper provideDatabaseHelper(Context context) {
+            return  new DemoDatabaseHelper(context);
+     }
 }

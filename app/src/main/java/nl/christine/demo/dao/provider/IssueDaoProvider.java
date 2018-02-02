@@ -9,6 +9,7 @@ package nl.christine.demo.dao.provider;
 
 import java.sql.SQLException;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -32,13 +33,7 @@ public class IssueDaoProvider implements Provider<IssueDao> {
     @Override
     public IssueDao get() {
 
-        IssueDao dao = null;
-
-        try {
-            dao = (IssueDao) helper.getDAO(Issue.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        IssueDao dao = (IssueDao) helper.getDAO(Issue.class);
 
         return dao;
     }

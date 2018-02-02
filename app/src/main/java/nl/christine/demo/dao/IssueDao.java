@@ -14,4 +14,5 @@ public interface IssueDao extends Dao<Issue, Integer> {
 
     List<Issue> getIssues() throws SQLException;
 
+    void clear();
 }
